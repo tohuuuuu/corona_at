@@ -8,12 +8,8 @@ import pandas as pd
 # https://www.coronatracker.at/
 
 # manually got each state's name from the site dropdown Bundesländer 
-states = pd.DataFrame({
-    "name": ['burgenland','kaernten','niederoesterreich','oberoesterreich',
-            'salzburg','steiermark','tirol','vorarlberg','wien'],
-    "threshold": ['147,22','280,65','842,14','745,14',
-            '279,21','623,20','378,82','198,57','955,60']
-})
+states = ['burgenland','kaernten','niederoesterreich','oberoesterreich',
+            'salzburg','steiermark','tirol','vorarlberg','wien']
 
 headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
 s = requests.Session()
@@ -21,8 +17,7 @@ url_base = 'https://www.coronatracker.at/'
 
 big_df = []
 # loop over all states, aka url paths
-for x in range(0, len(states)):
-    state = states.loc[x,'name']
+for state in states:
     print(state)
     url = url_base + state
 
@@ -50,10 +45,9 @@ for x in range(0, len(states)):
         for j in range(1,8):
             gc = gc + int(df.loc[i+j,'growth'])
         df.loc[i, 'growth_cumulated'] = gc
-    df['threshold'] = states.loc[x,'threshold']
 
     # extract certain columns, sort by date ascending (source is sorted descending)
-    df_extract = df[['state','date','cases','growth','growth_cumulated','threshold']].sort_values(by=['date'])
+    df_extract = df[['state','date','cases','growth','growth_cumulated']].sort_values(by=['date'])
 
     # add extracted dataframe to list of states
     big_df.append(df_extract)
