@@ -4,7 +4,6 @@ CREATE TABLE `corona_at` (
  `date` date NOT NULL,
  `cases` int(11) DEFAULT NULL,
  `growth` int(11) DEFAULT NULL,
- `growth_cumulated` int(11) DEFAULT NULL,
- `threshold` decimal(10,2) DEFAULT NULL,
+ `growth_cumulated` int(11) DEFAULT NULL
  PRIMARY KEY (`idcorona_at`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2048 DEFAULT CHARSET=utf8 COLLATE=utf8_german2_ci
