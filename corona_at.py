@@ -38,7 +38,7 @@ for x in range(0, len(states)):
     df['url'] = url
 
     # translate Datum value (timestamp) to isodate using regex
-    df['isodate'] = df['Datum'].str.replace(r'^(\d{2})\.(\d{2})\.(\d{4}).*',r'\3-\2-\1')
+    df['date'] = df['Datum'].str.replace(r'^(\d{2})\.(\d{2})\.(\d{4}).*',r'\3-\2-\1')
    
     # extract case numbers and growth value from 'Fälle (Gesamt)' column
     df[['cases', 'growth']] = df['Fälle (Gesamt)'].str.replace('.', '').str.extract(r'(\d+)\s+\+?(-?\d+)')
@@ -53,7 +53,7 @@ for x in range(0, len(states)):
     df['threshold'] = states.loc[x,'threshold']
 
     # extract certain columns, sort by date ascending (source is sorted descending)
-    df_extract = df[['state','isodate','cases','growth','growth_cumulated','threshold']].sort_values(by=['isodate'])
+    df_extract = df[['state','date','cases','growth','growth_cumulated','threshold']].sort_values(by=['date'])
 
     # add extracted dataframe to list of states
     big_df.append(df_extract)
