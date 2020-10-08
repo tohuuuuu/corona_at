@@ -2,16 +2,18 @@ import requests
 import pandas as pd
 
 # Scraper for coronatracker.at. Based on philshem's scrape_coronadata_at.py -
-# see https://gist.github.com/philshem/388f009a839cdcecb32c40b0d8f01b6e#file-scrape_coronadata_at-py
+# https://gist.github.com/philshem/388f009a839cdcecb32c40b0d8f01b6e#file-scrape_coronadata_at-py
 
 # scraping individual states from:
 # https://www.coronatracker.at/
 
-# manually got each state's name from the site dropdown Bundesländer 
-states = ['burgenland','kaernten','niederoesterreich','oberoesterreich',
-            'salzburg','steiermark','tirol','vorarlberg','wien']
+# manually got each state's name from the site dropdown Bundesländer
+states = ['burgenland', 'kaernten', 'niederoesterreich', 'oberoesterreich',
+          'salzburg', 'steiermark', 'tirol', 'vorarlberg', 'wien']
 
-headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1)" \
+           "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 " \
+               "Safari/537.36'}
 s = requests.Session()
 url_base = 'https://www.coronatracker.at/'
 
@@ -33,21 +35,25 @@ for state in states:
     df['url'] = url
 
     # translate Datum value (timestamp) to isodate using regex
-    df['date'] = df['Datum'].str.replace(r'^(\d{2})\.(\d{2})\.(\d{4}).*',r'\3-\2-\1')
-   
+    df['date'] = df['Datum'].str.replace + \
+        (r'^(\d{2})\.(\d{2})\.(\d{4}).*', r'\3-\2-\1')
+
     # extract case numbers and growth value from 'Fälle (Gesamt)' column
-    df[['cases', 'growth']] = df['Fälle (Gesamt)'].str.replace('.', '').str.extract(r'(\d+)\s+\+?(-?\d+)')
+    df[['cases', 'growth']] = df['Fälle (Gesamt)'].str.replace + \
+        ('.', '').str.extract(r'(\d+)\s+\+?(-?\d+)')
 
     # calculate cumulated growth for preceding seven days
     df['growth_cumulated'] = 0
     for i in range(0, (len(df)-7)):
         gc = 0
-        for j in range(1,8):
-            gc = gc + int(df.loc[i+j,'growth'])
+        for j in range(1, 8):
+            gc = gc + int(df.loc[i+j, 'growth'])
         df.loc[i, 'growth_cumulated'] = gc
 
-    # extract certain columns, sort by date ascending (source is sorted descending)
-    df_extract = df[['state','date','cases','growth','growth_cumulated']].sort_values(by=['date'])
+    # extract certain columns, sort by date ascending
+    # (source is sorted descending)
+    df_extract = df[['state', 'date', 'cases', 'growth',
+                     'growth_cumulated']].sort_values(by=['date'])
 
     # add extracted dataframe to list of states
     big_df.append(df_extract)
@@ -55,5 +61,5 @@ for state in states:
 # concat all dataframes
 df = pd.concat(big_df)
 
-df.to_csv('at.csv',index=False)
-#print(df)
+df.to_csv('at.csv', index=False)
+# print(df)
