@@ -1,7 +1,7 @@
 # corona_at
 Enwicklung der Corona-Neuinfektionen in Österreich nach Bundesland.
 
-Visualisierung der Daten: https://blog.fschmitt.me/?p=246 und https://blog.fschmitt.me/?p=278
+Visualisierung der Daten: https://blog.fschmitt.me/?p=246 und https://blog.fschmitt.me/?p=278 - derzeit offline...
 
 Für einen [ersten Blogbeitrag](https://blog.fschmitt.me/?p=246) wurden die Rohdaten der [Webseite coronatracker.at](https://www.coronatracker.at) verwendet. Coronatracker.at war meines Wissens zum damaligen Zeitpunkt die einzige Quelle für historische Fallzahlen. Der Scraper-Code basierte auf [jenem von philshem](https://gist.github.com/philshem).
 
